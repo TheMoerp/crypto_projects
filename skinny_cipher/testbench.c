@@ -1,0 +1,275 @@
+/*
+   !!! KEINE ÄNDERUNGEN IN DIESER DATEI !!!
+*/
+
+// ####################################
+// includes
+
+#include <stdio.h>
+#include "skinny.h"
+
+// ####################################
+// helper functions
+
+static u8 verify_state(u8 state[4][4], u8 correct_state[4][4])
+{
+    i32 i, j;
+
+    for (i = 0; i < 4; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            if (state[i][j] != correct_state[i][j])
+            {
+                return 0;
+            }
+        }
+    }
+
+    return 1;
+}
+
+static u8 verify_roundkey(u8 roundkey[3][4][4], u8 correct_roundkey[3][4][4])
+{
+    i32 i, j, k;
+
+    for (k = 0; k < 3; k++)
+    {
+        for (i = 0; i < 4; i++)
+        {
+            for (j = 0; j < 4; j++)
+            {
+                if (roundkey[k][i][j] != correct_roundkey[k][i][j])
+                {
+                    return 0;
+                }
+            }
+        }
+    }
+
+    return 1;
+}
+
+// ####################################
+// testbench
+
+int main()
+{
+    i32 i;
+    u8 failed = 0;
+
+    // debug values
+    u8 sub_cells_state_in[4][4] = {{0xa3, 0x99, 0x4b, 0x66}, {0xad, 0x85, 0xa3, 0x45}, {0x9f, 0x44, 0xe9, 0x2b}, {0x08, 0xf5, 0x50, 0xcb}};
+    u8 sub_cells_state_out[4][4] = {{0x11, 0x76, 0x2c, 0x14}, {0xb3, 0x30, 0x11, 0x34}, {0x79, 0x8d, 0xb2, 0xf8}, {0x55, 0xe7, 0x62, 0x2e}};
+
+    u8 sub_cells_inv_state_in[4][4] = {{0x11, 0x76, 0x2c, 0x14}, {0xb3, 0x30, 0x11, 0x34}, {0x79, 0x8d, 0xb2, 0xf8}, {0x55, 0xe7, 0x62, 0x2e}};
+    u8 sub_cells_inv_state_out[4][4] = {{0xa3, 0x99, 0x4b, 0x66}, {0xad, 0x85, 0xa3, 0x45}, {0x9f, 0x44, 0xe9, 0x2b}, {0x08, 0xf5, 0x50, 0xcb}};
+
+    u8 add_constants_state_in[4][4] = {{0x11, 0x76, 0x2c, 0x14}, {0xb3, 0x30, 0x11, 0x34}, {0x79, 0x8d, 0xb2, 0xf8}, {0x55, 0xe7, 0x62, 0x2e}};
+    u8 add_constants_state_out[4][4] = {{0x10, 0x76, 0x2c, 0x14}, {0xb3, 0x30, 0x11, 0x34}, {0x7b, 0x8d, 0xb2, 0xf8}, {0x55, 0xe7, 0x62, 0x2e}};
+
+    u8 add_roundkey_state_in[4][4] = {{0x10, 0x76, 0x2c, 0x14}, {0xb3, 0x30, 0x11, 0x34}, {0x7b, 0x8d, 0xb2, 0xf8}, {0x55, 0xe7, 0x62, 0x2e}};
+    u8 add_roundkey_key_in[3][4][4] = {{{0xdf, 0x88, 0x95, 0x48}, {0xcf, 0xc7, 0xea, 0x52}, {0xd2, 0x96, 0x33, 0x93}, {0x01, 0x79, 0x74, 0x49}}, {{0xab, 0x58, 0x8a, 0x34}, {0xa4, 0x7f, 0x1a, 0xb2}, {0xdf, 0xe9, 0xc8, 0x29}, {0x3f, 0xbe, 0xa9, 0xa5}}, {{0xab, 0x1a, 0xfa, 0xc2}, {0x61, 0x10, 0x12, 0xcd}, {0x8c, 0xef, 0x95, 0x26}, {0x18, 0xc3, 0xeb, 0xe8}}};
+    u8 add_roundkey_state_out[4][4] = {{0xcf, 0xbc, 0xc9, 0xaa}, {0xb9, 0x98, 0xf3, 0x19}, {0x7b, 0x8d, 0xb2, 0xf8}, {0x55, 0xe7, 0x62, 0x2e}};
+    u8 add_roundkey_key_out[3][4][4] = {{{0x96, 0x49, 0xd2, 0x79}, {0x33, 0x74, 0x01, 0x93}, {0xdf, 0x88, 0x95, 0x48}, {0xcf, 0xc7, 0xea, 0x52}}, {{0xd2, 0x4a, 0xbf, 0x7c}, {0x91, 0x52, 0x7f, 0x53}, {0xab, 0x58, 0x8a, 0x34}, {0xa4, 0x7f, 0x1a, 0xb2}}, {{0x77, 0xf4, 0x46, 0x61}, {0xca, 0x75, 0x0c, 0x13}, {0xab, 0x1a, 0xfa, 0xc2}, {0x61, 0x10, 0x12, 0xcd}}};
+
+    u8 add_roundkey_inv_state_in[4][4] = {{0xcf, 0xbc, 0xc9, 0xaa}, {0xb9, 0x98, 0xf3, 0x19}, {0x7b, 0x8d, 0xb2, 0xf8}, {0x55, 0xe7, 0x62, 0x2e}};
+    u8 add_roundkey_inv_key_in[3][4][4] = {{{0x96, 0x49, 0xd2, 0x79}, {0x33, 0x74, 0x01, 0x93}, {0xdf, 0x88, 0x95, 0x48}, {0xcf, 0xc7, 0xea, 0x52}}, {{0xd2, 0x4a, 0xbf, 0x7c}, {0x91, 0x52, 0x7f, 0x53}, {0xab, 0x58, 0x8a, 0x34}, {0xa4, 0x7f, 0x1a, 0xb2}}, {{0x77, 0xf4, 0x46, 0x61}, {0xca, 0x75, 0x0c, 0x13}, {0xab, 0x1a, 0xfa, 0xc2}, {0x61, 0x10, 0x12, 0xcd}}};
+    u8 add_roundkey_inv_state_out[4][4] = {{0x10, 0x76, 0x2c, 0x14}, {0xb3, 0x30, 0x11, 0x34}, {0x7b, 0x8d, 0xb2, 0xf8}, {0x55, 0xe7, 0x62, 0x2e}};
+    u8 add_roundkey_inv_key_out[3][4][4] = {{{0xdf, 0x88, 0x95, 0x48}, {0xcf, 0xc7, 0xea, 0x52}, {0xd2, 0x96, 0x33, 0x93}, {0x01, 0x79, 0x74, 0x49}}, {{0xab, 0x58, 0x8a, 0x34}, {0xa4, 0x7f, 0x1a, 0xb2}, {0xdf, 0xe9, 0xc8, 0x29}, {0x3f, 0xbe, 0xa9, 0xa5}}, {{0xab, 0x1a, 0xfa, 0xc2}, {0x61, 0x10, 0x12, 0xcd}, {0x8c, 0xef, 0x95, 0x26}, {0x18, 0xc3, 0xeb, 0xe8}}};
+
+    u8 shift_rows_state_in[4][4] = {{0xcf, 0xbc, 0xc9, 0xaa}, {0xb9, 0x98, 0xf3, 0x19}, {0x7b, 0x8d, 0xb2, 0xf8}, {0x55, 0xe7, 0x62, 0x2e}};
+    u8 shift_rows_state_out[4][4] = {{0xcf, 0xbc, 0xc9, 0xaa}, {0x19, 0xb9, 0x98, 0xf3}, {0xb2, 0xf8, 0x7b, 0x8d}, {0xe7, 0x62, 0x2e, 0x55}};
+    u8 shift_rows_inv_state_in[4][4] = {{0xcf, 0xbc, 0xc9, 0xaa}, {0x19, 0xb9, 0x98, 0xf3}, {0xb2, 0xf8, 0x7b, 0x8d}, {0xe7, 0x62, 0x2e, 0x55}};
+    u8 shift_rows_inv_state_out[4][4] = {{0xcf, 0xbc, 0xc9, 0xaa}, {0xb9, 0x98, 0xf3, 0x19}, {0x7b, 0x8d, 0xb2, 0xf8}, {0x55, 0xe7, 0x62, 0x2e}};
+
+    u8 mix_columns_state_in[4][4] = {{0xcf, 0xbc, 0xc9, 0xaa}, {0x19, 0xb9, 0x98, 0xf3}, {0xb2, 0xf8, 0x7b, 0x8d}, {0xe7, 0x62, 0x2e, 0x55}};
+    u8 mix_columns_state_out[4][4] = {{0x9a, 0x26, 0x9c, 0x72}, {0xcf, 0xbc, 0xc9, 0xaa}, {0xab, 0x41, 0xe3, 0x7e}, {0x7d, 0x44, 0xb2, 0x27}};
+    u8 mix_columns_inv_state_in[4][4] = {{0x9a, 0x26, 0x9c, 0x72}, {0xcf, 0xbc, 0xc9, 0xaa}, {0xab, 0x41, 0xe3, 0x7e}, {0x7d, 0x44, 0xb2, 0x27}};
+    u8 mix_columns_inv_state_out[4][4] = {{0xcf, 0xbc, 0xc9, 0xaa}, {0x19, 0xb9, 0x98, 0xf3}, {0xb2, 0xf8, 0x7b, 0x8d}, {0xe7, 0x62, 0x2e, 0x55}};
+
+    u8 key[48] = {0xdf, 0x88, 0x95, 0x48, 0xcf, 0xc7, 0xea, 0x52, 0xd2, 0x96, 0x33, 0x93, 0x01, 0x79, 0x74, 0x49, 0xab, 0x58, 0x8a, 0x34, 0xa4, 0x7f, 0x1a, 0xb2, 0xdf, 0xe9, 0xc8, 0x29, 0x3f, 0xbe, 0xa9, 0xa5, 0xab, 0x1a, 0xfa, 0xc2, 0x61, 0x10, 0x12, 0xcd, 0x8c, 0xef, 0x95, 0x26, 0x18, 0xc3, 0xeb, 0xe8};
+    u8 correct_plaintext[16] = {0xa3, 0x99, 0x4b, 0x66, 0xad, 0x85, 0xa3, 0x45, 0x9f, 0x44, 0xe9, 0x2b, 0x08, 0xf5, 0x50, 0xcb};
+    u8 correct_ciphertext[16] = {0x94, 0xec, 0xf5, 0x89, 0xe2, 0x01, 0x7c, 0x60, 0x1b, 0x38, 0xc6, 0x34, 0x6a, 0x10, 0xdc, 0xfa};
+    u8 plaintext[16], ciphertext[16];
+
+    // test the implementation
+    printf("SKINNY-128-384 Implementation\n\n");
+
+    printf("Testing sub_cells... ");
+    sub_cells(sub_cells_state_in);
+    if (!verify_state(sub_cells_state_in, sub_cells_state_out))
+    {
+        printf("Test FAILED\n");
+        printf("Expected state: ");
+        print_state(sub_cells_state_out);
+        printf("\nReceived state: ");
+        print_state(sub_cells_state_in);
+        printf("\n");
+        failed = 1;
+    }
+    printf("Test PASSED\n");
+
+    printf("Testing sub_cells_inv... ");
+    sub_cells_inv(sub_cells_inv_state_in);
+    if (!verify_state(sub_cells_inv_state_in, sub_cells_inv_state_out))
+    {
+        printf("Test FAILED\n");
+        printf("Expected state: ");
+        print_state(sub_cells_inv_state_out);
+        printf("\nReceived state: ");
+        print_state(sub_cells_inv_state_in);
+        printf("\n");
+        failed = 1;
+    }
+    printf("Test PASSED\n");
+
+    printf("Testing add_constants... ");
+    add_constants(add_constants_state_in, 0);
+    if (!verify_state(add_constants_state_in, add_constants_state_out))
+    {
+        printf("Test FAILED\n");
+        printf("Expected state: ");
+        print_state(add_constants_state_out);
+        printf("\nReceived state: ");
+        print_state(add_constants_state_in);
+        printf("\n");
+        failed = 1;
+    }
+    printf("Test PASSED\n");
+
+    printf("Testing add_roundkey... ");
+    add_roundkey(add_roundkey_state_in, add_roundkey_key_in);
+    if (!verify_state(add_roundkey_state_in, add_roundkey_state_out))
+    {
+        printf("Test FAILED\n");
+        printf("Expected state: ");
+        print_state(add_roundkey_state_out);
+        printf("\nReceived state: ");
+        print_state(add_roundkey_state_in);
+        printf("\n");
+        failed = 1;
+    }
+    if (!verify_roundkey(add_roundkey_key_in, add_roundkey_key_out))
+    {
+        printf("Test FAILED\n");
+        printf("Expected roundkey: ");
+        print_roundkey(add_roundkey_key_out);
+        printf("\nReceived roundkey: ");
+        print_roundkey(add_roundkey_key_in);
+        printf("\n");
+        failed = 1;
+    }
+    printf("Test PASSED\n");
+
+    printf("Testing add_roundkey_inv... ");
+    add_roundkey_inv(add_roundkey_inv_state_in, add_roundkey_inv_key_in);
+    if (!verify_roundkey(add_roundkey_inv_key_in, add_roundkey_inv_key_out))
+    {
+        printf("Test FAILED\n");
+        printf("Expected roundkey: ");
+        print_roundkey(add_roundkey_inv_key_out);
+        printf("\nReceived roundkey: ");
+        print_roundkey(add_roundkey_inv_key_in);
+        printf("\n");
+        failed = 1;
+    }
+    if (!verify_state(add_roundkey_inv_state_in, add_roundkey_inv_state_out))
+    {
+        printf("Test FAILED\n");
+        printf("Expected state: ");
+        print_state(add_roundkey_inv_state_out);
+        printf("\nReceived state: ");
+        print_state(add_roundkey_inv_state_in);
+        printf("\n");
+        failed = 1;
+    }
+    printf("Test PASSED\n");
+
+    printf("Testing shift_rows... ");
+    shift_rows(shift_rows_state_in);
+    if (!verify_state(shift_rows_state_in, shift_rows_state_out))
+    {
+        printf("Test FAILED\n");
+        printf("Expected state: ");
+        print_state(shift_rows_state_out);
+        printf("\nReceived state: ");
+        print_state(shift_rows_state_in);
+        printf("\n");
+        failed = 1;
+    }
+    printf("Test PASSED\n");
+
+    printf("Testing shift_rows_inv... ");
+    shift_rows_inv(shift_rows_inv_state_in);
+    if (!verify_state(shift_rows_inv_state_in, shift_rows_inv_state_out))
+    {
+        printf("Test FAILED\n");
+        printf("Expected state: ");
+        print_state(shift_rows_inv_state_out);
+        printf("\nReceived state: ");
+        print_state(shift_rows_inv_state_in);
+        printf("\n");
+        failed = 1;
+    }
+    printf("Test PASSED\n");
+
+    printf("Testing mix_columns... ");
+    mix_columns(mix_columns_state_in);
+    if (!verify_state(mix_columns_state_in, mix_columns_state_out))
+    {
+        printf("Test FAILED\n");
+        printf("Expected state: ");
+        print_state(mix_columns_state_out);
+        printf("\nReceived state: ");
+        print_state(mix_columns_state_in);
+        printf("\n");
+        failed = 1;
+    }
+    printf("Test PASSED\n");
+
+    printf("Testing mix_columns_inv... ");
+    mix_columns_inv(mix_columns_inv_state_in);
+    if (!verify_state(mix_columns_inv_state_in, mix_columns_inv_state_out))
+    {
+        printf("Test FAILED\n");
+        printf("Expected state: ");
+        print_state(mix_columns_inv_state_out);
+        printf("\nReceived state: ");
+        print_state(mix_columns_inv_state_in);
+        printf("\n");
+        failed = 1;
+    }
+    printf("Test PASSED\n");
+
+    printf("Testing encrypt... ");
+    encrypt(correct_plaintext, key, ciphertext);
+    for (i = 0; i < 16; ++i)
+    {
+        if (ciphertext[i] != correct_ciphertext[i])
+        {
+            printf("Test FAILED\n");
+            failed = 1;
+        }
+    }
+    printf("Test PASSED\n");
+
+    printf("Testing decrypt... ");
+    decrypt(correct_ciphertext, key, plaintext);
+    for (i = 0; i < 16; ++i)
+    {
+        if (plaintext[i] != correct_plaintext[i])
+        {
+            printf("Test FAILED\n");
+            failed = 1;
+        }
+    }
+    printf("Test PASSED\n");
+
+    if (failed == 0)
+    {
+        printf("\nALL TESTS PASSED\n");
+    }
+
+    return 0;
+}
