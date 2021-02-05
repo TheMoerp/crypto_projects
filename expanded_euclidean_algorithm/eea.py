@@ -16,7 +16,7 @@ def eea(mod, num):
             break
     #print("---------------------------")
     invNum = t[i - 1]
-    while t[i - 1] < 0:
+    while invNum < 0:
         invNum = invNum + mod
     return invNum
 
