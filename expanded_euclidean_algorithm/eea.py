@@ -15,8 +15,8 @@ def eea(mod, num):
         if r[i] == 0:
             break
     #print("---------------------------")
-    if t[i - 1] < 0:
-        return t[t - 1] + mod
+    while t[i - 1] < 0:
+        return t[i - 1] + mod
     return t[i - 1]
 
 
