@@ -1,37 +1,41 @@
-alpha = 34 
-beta = 182
-m = 16
-g = 233
-
 def eea(mod, num):
     r = [mod, num]
     t = [0, 1]
     q = [0]
     i = 1
-    while(True):
+    while True:
         i += 1
         r.append(r[i - 2] % r[i - 1])
         q.append((r[i - 2] - r[i]) / r[i - 1])
         t.append(t[i - 2] - q[i - 1] * t[i - 1])
-        if(r[i] == 0):
+        if r[i] == 0:
             break
-    return t[i - 1]
-
-babyStepList = []
-giantStepList = []
-
-for i in range(m):
-    babyStepList.append(((alpha ** i) % g , i))
-giantAlpha = eea(g, (alpha ** m) % g)
-for j in range(m):
-    giantStepList.append((((giantAlpha ** j) * beta) % g, j))
+    invNum = t[i - 1]
+    while invNum < 0:
+        invNum = invNum + mod
+    return invNum
 
 
-for k in babyStepList:
-    for l in giantStepList:
-        if(k[0] == l[0]):
-            xb = k[1]
-            xg = l[1]
-            x = xg * m + xb
-            print("{} = {} * {} + {}".format(x, xg, m, xb))
-            print("x = {}".format(x))
+def babystep_giantstep(alpha, beta, m, g):
+    giant_alpha = int(eea(g, (alpha**m)%g))
+    babystep_list = list(map(lambda x : (alpha ** x) % g, range(m)))
+    giantstep_list = list(map(lambda x : ((giant_alpha ** x) * beta) % g, range(m)))
+
+    for i in range(len(babystep_list)):
+        for j in range(len(giantstep_list)):
+            if babystep_list[i] == giantstep_list[j]:
+                x_b = i
+                x_g = j
+                x = x_g * m + x_b
+                print(f'x: {x_g} * {m} + {x_b} = {x}') 
+
+
+def main():
+    alpha = int(input('alpha: '))
+    beta = int(input('beta: '))
+    m = int(input('m: '))
+    g = int(input('g: '))
+    babystep_giantstep(alpha, beta, m, g)
+
+if __name__ == "__main__":
+    main()
