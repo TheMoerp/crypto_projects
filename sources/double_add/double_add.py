@@ -2,46 +2,38 @@ from eea import eea
 
 
 def computePoint(point1, x2, s, p):
-    x3 = int((s ** 2 - point1[0] - x2) % p)
-    y3 = int((s * (point1[0] - x3) - point1[1]) % p)
-    # print("newX = ({}^2 - {} - {}) mod {} = {}".format(s, point1[0], x2, p, x3))
-    # print("newY = ({}({} - {}) - {}) mod {} = {}".format(s, point1[0], x3, point1[1], p, y3))
-    # print("--------------------------------------")
+    x3 = (s ** 2 - point1[0] - x2) % p
+    y3 = (s * (point1[0] - x3) - point1[1]) % p
+    print(f'newX = ({s}^2 - {point1[0]} - {x2}) mod {p} = {x3}\n'\
+           'newY = ({s({point1[0] - {x3}) - {point1[1]}) mod {p} = {y3}'\
+           '{40*"-"')
     return (x3, y3)
 
 
-def doublePoint(point, a, p):  # double the given point
-    # print("--------------------------------------")
-    print("{} + {}:".format(point, point))
-    s = (eea(p, 2 * point[1]) * (3 * point[0] ** 2 + a)) % p  # computes s
-    # print("s = ((3 * {}^2 + {}) * (2 * {})^-1) mod {} = {}".format(point[0], a, point[1], p, s))
-    return computePoint(point, point[0], s, p)  # returns the computed point
+def doublePoint(point, a, p):
+    print(f'{40*"-"}\n{point} + {point}:')
+    s = (eea(p, 2 * point[1]) * (3 * point[0] ** 2 + a)) % p
+    print(f's = ((3 * {point[0]}^2 + {a}) * (2 * {point[1]}^-1) mod {p} = {s}')
+    return computePoint(point, point[0], s, p)
 
-def addPoint(point1, point2, p):  # adds a point to another point 
-    # print("--------------------------------------")
-    # print("{} + {}:".format(point1, point2))
-    # if one of the points is the infinitive point it returns the other point
-    if(point1 == 0): 
+
+def addPoint(point1, point2, p):
+    print(f'{40*"-"}\n{point1} + {point2}:')
+    if point1 == 0: 
         return point2
-    elif(point2 == 0):
+    elif point2 == 0:
         return point1
-
     else:
-        # tests if the point to compute the infinitiv point
-        if((point1[0] == point2[0]) and (-point1[1] % p == point2[1])):
+        if point1[0] == point2[0] and -point1[1]%p == point2[1]:
             print("Dieser ist Punkt im Unentlichen")
             return 0
         else:
-            # the x2 has to be bigger then x1 otherwise there will be a negative input for the eea 
-            # If thats not the case the points have to change
-            if(point1[0] > point2[0]): 
-                tmpPoint = point1
-                point1 = point2
-                point2 = tmpPoint
-
-            s = (eea(p, point2[0] - point1[0]) * (point2[1] - point1[1])) % p  # computes s
-            # print("s = (({} - {}) * ({} - {})^-1) mod {} = {}".format(point2[1], point1[1], point2[0], point1[0], p, s))
-            return computePoint(point1, point2[0], s, p)  # returns the computed point
+            if point1[0] > point2[0]:
+                point1, point2 = point2, point1
+            s = (eea(p, point2[0] - point1[0]) * (point2[1] - point1[1])) % p
+            print(f's = (({point2[1]} - {point1[1]}) * ({point2[0]} - {point1[0]}'\
+                   ')^-1) mod {p} = {s}')
+            return computePoint(point1, point2[0], s, p)
 
 
 def dblAdd(startPnt, factor, p, a):
