@@ -1,63 +1,59 @@
-def eea(mod, num):  # eea function
-    #print("---------------------------")
-    #print("eea({}, {}):".format(mod, num))
-    r = [mod, num]
-    t = [0, 1]
-    q = [0]
-    i = 1
-    #print("Runde {}: r0 = {}, r1 = {}, t0 = {}, t1 = {}, q0 = {}".format(i, r[0], r[1], t[0], t[1], q))
-    while(True):
-        i += 1
-        r.append(r[i - 2] % r[i - 1])
-        q.append((r[i - 2] - r[i]) / r[i - 1])
-        t.append(t[i - 2] - q[i - 1] * t[i - 1])
-        #print("Runde {}: r{} = {}, t{} = {}, q{} = {}".format(i, i, r[i], i, t[i], i - 1 , q[i - 1]))
-        if(r[i] == 0):
-            break
-    #print("---------------------------")
-    return int(t[i - 1])
+from eea import eea
 
 
-def computePoint(point1, x2, s, p):  # computes the new point
-    x3 = (s ** 2 - point1[0] - x2) % p  # new x
-    y3 = (s * (point1[0] - x3) - point1[1]) % p  # new y
-    # print("newX = ({}^2 - {} - {}) mod {} = {}".format(s, point1[0], x2, p, x3))
-    # print("newY = ({}({} - {}) - {}) mod {} = {}".format(s, point1[0], x3, point1[1], p, y3))
-    # print("--------------------------------------")
-    return (int(x3), int(y3))
+def compute_point(point1, x2, s, p):
+    x3 = (s ** 2 - point1[0] - x2) % p
+    y3 = (s * (point1[0] - x3) - point1[1]) % p
+    print(f'newX = ({s}^2 - {point1[0]} - {x2}) mod {p} = {x3}\n'\
+          f'newY = (s({point1[0]} - {x3}) - {point1[1]}) mod {p} = {y3}\n'\
+          f'The new point is ({x3},{y3})\n{40*"-"}\n')
+    return (x3, y3)
 
 
-def doublePoint(point, a, p):  # double the given point
-    # print("--------------------------------------")
-    #print("{} + {}:".format(point, point))
-    s = (eea(p, 2 * point[1]) * (3 * point[0] ** 2 + a)) % p  # computes s
-    # print("s = ((3 * {}^2 + {}) * (2 * {})^-1) mod {} = {}".format(point[0], a, point[1], p, s))
-    return computePoint(point, point[0], s, p)  # returns the computed point
+def point_doubling(point, a, p):
+    s = (eea(p, 2 * point[1]) * (3 * point[0] ** 2 + a)) % p
+    print(f'\n{40*"-"}\n{point} + {point}:\ns = ((3 * {point[0]}^2 + {a}) * (2 '\
+          f'* {point[1]}^-1) mod {p} = {s}')
+    return compute_point(point, point[0], s, p)
 
-def addPoint(point1, point2, p):  # adds a point to another point 
-    # print("--------------------------------------")
-    # print("{} + {}:".format(point1, point2))
-    # if one of the points is the infinitive point it returns the other point
-    if(point1 == 0): 
+
+def point_addition(point1, point2, p):
+    if point1 == 0:
         return point2
-    elif(point2 == 0):
+    elif point2 == 0:
         return point1
-
     else:
-        # tests if the point to compute the infinitiv point
-        if((point1[0] == point2[0]) and (-point1[1] % p == point2[1])):
-            print("Dieser ist Punkt im Unentlichen")
+        if point1[0] == point2[0] and -point1[1]%p == point2[1]:
+            print("You are trying to reach the point in the infinite")
             return 0
         else:
-            # the x2 has to be bigger then x1 otherwise there will be a negative input for the eea 
-            # If thats not the case the points have to change
-            if(point1[0] > point2[0]): 
-                tmpPoint = point1
-                point1 = point2
-                point2 = tmpPoint
+            # To compute the eea correctly the bigger number has to be the first
+            if point1[0] > point2[0]:
+                point1, point2 = point2, point1
+            s = (eea(p, point2[0] - point1[0]) * (point2[1] - point1[1])) % p
+            print(f's = (({point2[1]} - {point1[1]}) * ({point2[0]} - {point1[0]}'\
+                  f')^-1) mod {p} = {s}')
+            return compute_point(point1, point2[0], s, p)
 
-            s = (eea(p, point2[0] - point1[0]) * (point2[1] - point1[1])) % p  # computes s
-            # print("s = (({} - {}) * ({} - {})^-1) mod {} = {}".format(point2[1], point1[1], point2[0], point1[0], p, s))
-            return computePoint(point1, point2[0], s, p)  # returns the computed point
 
-    
+
+def main():
+    operation = input('\nEnter "d" to performe a point doubling\nEnter '\
+                      '"a" to performe a point addtion\noperation: ')
+    slice_point = lambda x : (int(x[0][1:]), int(x[1][:-1]))
+    if operation == 'd':
+        point = slice_point(input('point to double eg.: (3,5): ').split(','))
+        a = int(input('a: '))
+        p = int(input('p: '))
+        point_doubling(point, a, p)
+    elif operation == 'a':
+        point1 = slice_point(input('point1 eg.: (3,5): ').split(','))
+        point2 = slice_point(input('point2 eg.: (4,6): ').split(','))
+        p = int(input('p: '))
+        point_addition(point1, point2, p)
+    else:
+        print("you did not choose the operation correctly")
+        exit()
+
+if __name__ == "__main__":
+    main()
