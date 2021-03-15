@@ -1,56 +1,29 @@
-from eea import eea
+import ecc_operations as ecc
 
 
-def computePoint(point1, x2, s, p):
-    x3 = (s ** 2 - point1[0] - x2) % p
-    y3 = (s * (point1[0] - x3) - point1[1]) % p
-    print(f'newX = ({s}^2 - {point1[0]} - {x2}) mod {p} = {x3}\n'\
-           'newY = ({s({point1[0] - {x3}) - {point1[1]}) mod {p} = {y3}'\
-           '{40*"-"')
-    return (x3, y3)
-
-
-def doublePoint(point, a, p):
-    print(f'{40*"-"}\n{point} + {point}:')
-    s = (eea(p, 2 * point[1]) * (3 * point[0] ** 2 + a)) % p
-    print(f's = ((3 * {point[0]}^2 + {a}) * (2 * {point[1]}^-1) mod {p} = {s}')
-    return computePoint(point, point[0], s, p)
-
-
-def addPoint(point1, point2, p):
-    print(f'{40*"-"}\n{point1} + {point2}:')
-    if point1 == 0: 
-        return point2
-    elif point2 == 0:
-        return point1
-    else:
-        if point1[0] == point2[0] and -point1[1]%p == point2[1]:
-            print("Dieser ist Punkt im Unentlichen")
-            return 0
-        else:
-            if point1[0] > point2[0]:
-                point1, point2 = point2, point1
-            s = (eea(p, point2[0] - point1[0]) * (point2[1] - point1[1])) % p
-            print(f's = (({point2[1]} - {point1[1]}) * ({point2[0]} - {point1[0]}'\
-                   ')^-1) mod {p} = {s}')
-            return computePoint(point1, point2[0], s, p)
-
-
-def dblAdd(startPnt, factor, p, a):
-    tmpPnt = startPnt
-    print("---------------------------")
-    print("DoubleAndAdd: {}{}:".format(factor, startPnt))
-    print("")
+def double_add(start_point, factor, a, p):
+    print('{:-^40}\nDouble-and-Add: {}{}:\n'.format('Double-and-Add',
+          factor, start_point))
+    tmp_point = start_point
     for i in bin(factor)[3:]:
-        if(i == '1'):
-            tmpPnt = doublePoint(tmpPnt, a, p)
-            tmpPnt = addPoint(tmpPnt, startPnt, p)
-            # tmpPnt *= tmpPnt
-            # tmpPnt *= startPnt
-            print("{}  DoubleAndAdd".format(tmpPnt))
+        if i == '1':
+            tmp_point = ecc.point_doubling(tmp_point, a, p)
+            tmp_point = ecc.point_addition(tmp_point, start_point, p)
+            print(f'{tmp_point} Double-and-Add')
         else:
-            tmpPnt = doublePoint(tmpPnt, a, p)
-            print("{}  Double".format(tmpPnt))
-    print("---------------------------")
-    return tmpPnt
+            tmp_point = ecc.point_doubling(tmp_point, a, p)
+            print(f'{tmp_point} Double')
+    print(f'\nresult: {tmp_point}\n{40*"-"}')
+    return tmp_point
 
+
+def main():
+    slice_point = lambda x : (int(x[0][1:]), int(x[1][:-1]))
+    start_point = slice_point(input('point to start eg.: (3,5): ').split(','))
+    factor = int(input('factor: '))
+    a = int(input('a: '))
+    p = int(input('p: '))
+    double_add(start_point, factor, a, p)
+
+if __name__ == "__main__":
+    main()

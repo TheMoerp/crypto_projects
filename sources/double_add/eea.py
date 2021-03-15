@@ -13,4 +13,4 @@ def eea(mod, num):
     invNum = t[i - 1]
     while invNum < 0:
         invNum = invNum + mod
-    return invNum
+    return int(invNum)
