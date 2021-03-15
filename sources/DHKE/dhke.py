@@ -1,20 +1,5 @@
 from random import randint
-
-def sqmul(base, exp, mod):
-    tmpBase = base
-    #print("---------------------------")
-    #print("SQMUL: {}^{} mod {}".format(base, exp, mod))
-    #print("")
-    for i in bin(exp)[3:]:
-        if(i == '1'):
-            tmpBase *= tmpBase
-            tmpBase *= base
-            #print("{:>3}  SQMUL".format(tmpBase%mod))
-        else:
-            tmpBase *= tmpBase
-            #print("{:>3}  SQ".format(tmpBase%mod))
-    #print("---------------------------")
-    return tmpBase%mod
+from squere_multiply import sqmul
 
 
 # give '' as kb_pr and ka_pr to choose random k_pr's
