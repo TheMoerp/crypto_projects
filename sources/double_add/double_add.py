@@ -1,30 +1,13 @@
-def eea(mod, num):  # eea function
-    #print("---------------------------")
-    #print("eea({}, {}):".format(mod, num))
-    r = [mod, num]
-    t = [0, 1]
-    q = [0]
-    i = 1
-    #print("Runde {}: r0 = {}, r1 = {}, t0 = {}, t1 = {}, q0 = {}".format(i, r[0], r[1], t[0], t[1], q))
-    while(True):
-        i += 1
-        r.append(r[i - 2] % r[i - 1])
-        q.append((r[i - 2] - r[i]) / r[i - 1])
-        t.append(t[i - 2] - q[i - 1] * t[i - 1])
-        #print("Runde {}: r{} = {}, t{} = {}, q{} = {}".format(i, i, r[i], i, t[i], i - 1 , q[i - 1]))
-        if(r[i] == 0):
-            break
-    #print("---------------------------")
-    return int(t[i - 1])
+from eea import eea
 
 
-def computePoint(point1, x2, s, p):  # computes the new point
-    x3 = (s ** 2 - point1[0] - x2) % p  # new x
-    y3 = (s * (point1[0] - x3) - point1[1]) % p  # new y
+def computePoint(point1, x2, s, p):
+    x3 = int((s ** 2 - point1[0] - x2) % p)
+    y3 = int((s * (point1[0] - x3) - point1[1]) % p)
     # print("newX = ({}^2 - {} - {}) mod {} = {}".format(s, point1[0], x2, p, x3))
     # print("newY = ({}({} - {}) - {}) mod {} = {}".format(s, point1[0], x3, point1[1], p, y3))
     # print("--------------------------------------")
-    return (int(x3), int(y3))
+    return (x3, y3)
 
 
 def doublePoint(point, a, p):  # double the given point
