@@ -19,6 +19,7 @@ def sqmul(base, exp, mod):
 
 # give '' as kb_pr and ka_pr to choose random k_pr's
 def dhke(p, alpha, ka_pr, kb_pr):
+    # computes k_pr's, k_pub's and k_AB
     if ka_pr == '':
         ka_pr = randint(2, p-1)
     if kb_pr == '':
@@ -42,7 +43,7 @@ def dhke(p, alpha, ka_pr, kb_pr):
     print(28*'-')
 
 
-def run_dhke():
+def main():
     print()
     print(f'{"Paramter"}'.center(28, '-'))
     p = int(input('p: '))
@@ -53,9 +54,6 @@ def run_dhke():
     print('\n')
     dhke(p, alpha, ka_pr, kb_pr)
     print('')
-
-def main():
-    run_dhke()
 
 if __name__ == "__main__":
     main()
