@@ -12,7 +12,6 @@ def eea(mod, num):
         q.append(int((r[i - 2] - r[i]) / r[i - 1]))
         t.append(t[i - 2] - q[i - 1] * t[i - 1])
         print(f'Round {i}: r{i} = {r[i]}, t{i} = {t[i]}, q{i-1} = {q[i-1]}')
-
         if r[i] == 0:
             break
     invNum = t[i - 1]
