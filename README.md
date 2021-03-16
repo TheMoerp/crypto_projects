@@ -1,4 +1,4 @@
-# cryptography Projects
+# Cryptography Projects
 
 This is a collection of cryptography projects. Almost every project is written in **Python** without any dependencies needed.
 Some of them are very specific for one purpose while others are for general usage. Furthermore some of the projects do not have clean code or do not work.
@@ -22,13 +22,14 @@ Some of them are very specific for one purpose while others are for general usag
 		- Elgamal signiture
 	- RSA
 		- CRT (Chinese remainder theorem)
+- **hash functions**
+	- Keccak (SHA-3)
 - **block ciphers**
 	- AES *(old & not maintained!)*
 	- DES *(old & not maintained!)*
 		- encrypt
 		- recreate main key
 		- recreate round key
-	- Keccak (SHA-3)
 	- SKINNY in C *(old &not maintained!)*
 - **stream ciphers**
 	- LFSR key generator *(old & not maintained!)*
