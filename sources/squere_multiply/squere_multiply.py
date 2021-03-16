@@ -1,16 +1,23 @@
 def sqmul(base, exp, mod):
-    tmpBase = base;
-    x = 1;
-    print("---------------------------");
-    print("SQMUL: {}^{} mod {}".format(base, exp, mod));
-    print("");
+    print(f'{40*"-"}\nSQMUL: {base}^{exp} mod {mod}\n')
+    tmp_base = base
     for i in bin(exp)[3:]:
         if(i == '1'):
-            tmpBase *= tmpBase;
-            tmpBase *= base;
-            print("{:>3}  SQMUL".format(tmpBase%mod));
+            tmp_base *= tmp_base
+            tmp_base *= base
+            print("{:>3}  SQMUL".format(tmp_base%mod))
         else:
-            tmpBase *= tmpBase;
-            print("{:>3}  SQ".format(tmpBase%mod));
-    print("---------------------------");
-    return tmpBase%mod;
+            tmp_base *= tmp_base
+            print("{:>3}  SQ".format(tmp_base%mod))
+    print(40*'-')
+    return tmp_base%mod
+
+
+def main():
+    base = int(input('base: '))
+    exp = int(input('exponent: '))
+    mod = int(input('mod: '))
+    print(sqmul(base, exp, mod))
+
+if __name__ == "__main__":
+    main()
