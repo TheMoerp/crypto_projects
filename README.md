@@ -1,6 +1,6 @@
 # cryptography Projects
 
-This is a collection of cryptography projects. Almost every project is written in **Python** without any dependencies needed.\s\s
+This is a collection of cryptography projects. Almost every project is written in **Python** without any dependencies needed.
 Some of them are very specific for one purpose while others are for general usage. Furthermore some of the projects do not have clean code or do not work.
 
 ## Content
