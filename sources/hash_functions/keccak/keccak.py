@@ -80,7 +80,7 @@ def round(A, round_const, word_length):
     return A
 
 
-def f_function(A, round_num, word_length=1600//25)
+def f_function(A, round_num, word_length=1600//25):
     for i in range(round_num):
         A = round(A, RC[i] % (1 << word_length), word_length)
     return A
