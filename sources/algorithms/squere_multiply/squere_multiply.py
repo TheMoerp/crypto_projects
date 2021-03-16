@@ -5,11 +5,11 @@ def sqmul(base, exp, mod):
         if(i == '1'):
             tmp_base *= tmp_base
             tmp_base *= base
-            print("{:>3}  SQMUL".format(tmp_base%mod))
+            print("{:>3}  SQMUL".format(tmp_base % mod))
         else:
             tmp_base *= tmp_base
-            print("{:>3}  SQ".format(tmp_base%mod))
-    print(40*'-')
+            print("{:>3}  SQ".format(tmp_base % mod))
+    print(40 * '-')
     return tmp_base%mod
 
 

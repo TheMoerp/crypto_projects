@@ -23,7 +23,7 @@ def point_addition(point1, point2, p):
     elif point2 == 0:
         return point1
     else:
-        if point1[0] == point2[0] and -point1[1]%p == point2[1]:
+        if point1[0] == point2[0] and -point1[1] % p == point2[1]:
             print("You are trying to reach the point in the infinite")
             return 0
         else:

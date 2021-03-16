@@ -8,13 +8,13 @@ def find_prime_factors(j):
     return factors
 
 def element_amount(group_num):
-    pos_cardinality = find_prime_factors(group_num-1)
-    pos_cardinality.append(group_num-1)
+    pos_cardinality = find_prime_factors(group_num - 1)
+    pos_cardinality.append(group_num - 1)
     pos_cardinality.insert(0, 1)
     cardinality_cnt = {}
     for i in range(1, group_num):
         for j in pos_cardinality:
-            if (i**j)%group_num == 1:
+            if (i ** j) % group_num == 1:
                 try:
                     if cardinality_cnt[j] >= 1:
                         cardinality_cnt[j] += 1       

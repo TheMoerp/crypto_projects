@@ -6,4 +6,4 @@ def sqmul(base, exp, mod):
             tmpBase *= base
         else:
             tmpBase *= tmpBase
-    return tmpBase%mod
+    return tmpBase % mod
