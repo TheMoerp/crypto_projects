@@ -11,5 +11,5 @@ def main():
     num = int(input('Find prime factors of: '))
     print(find_prime_factors(num))
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     main()
