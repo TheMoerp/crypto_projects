@@ -12,7 +12,3 @@
 - rsa crt
 - skinny
 - squere multiply
-- stream ciphers
-	- LFSR
-	- OTP
-- substitution cipher
