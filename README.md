@@ -30,7 +30,7 @@ Some of them are very specific for one purpose while others are for general usag
 		- encrypt
 		- recreate main key
 		- recreate round key
-	- SKINNY in C *(old &not maintained!)*
+	- SKINNY in C *(old & not maintained!)*
 - **stream ciphers**
 	- LFSR key generator *(old & not maintained!)*
 	- OTP *(old & not maintained!)*

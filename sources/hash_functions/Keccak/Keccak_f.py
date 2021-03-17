@@ -53,7 +53,6 @@ def rho_pi(A, word_length):
          [0, 0, 0, 0, 0],
          [0, 0, 0, 0, 0],
          [0, 0, 0, 0, 0]]
-
     for x in range(5):
         for y in range(5):
             B[y][(2 * x + 3 * y) % 5] = rot(A[x][y], rho_table[x][y], word_length)
