@@ -1,11 +1,11 @@
 # Cryptography Projects
 
-This is a collection of cryptography projects. Almost every project is written in **Python** without any dependencies needed.
+This is a collection of some small cryptography projects. Almost every project is written in **Python** without any dependencies needed.
 Some of them are very specific for one purpose while others are for general usage. Furthermore some of the projects do not have clean code or do not work.
 
 ## Content
  - **algorithms**
-	 - baby-step giant-step
+	 - Baby-Step-Giant-Step
 	 - element per cardinality counter (multiplicative groups)
 	 - eea (Extended Euclidean algorithm)
 	 - ggt (Euclidean algorithm)
@@ -18,8 +18,8 @@ Some of them are very specific for one purpose while others are for general usag
 		- Double-and-Add algorithm
 	- Elgamal
 		- Elgamal cipher
-		- Elgamal falsification
 		- Elgamal signiture
+		- Elgamal signiture falsification
 	- RSA
 		- CRT (Chinese remainder theorem)
 - **hash functions**
