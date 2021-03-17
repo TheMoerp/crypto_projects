@@ -11,6 +11,7 @@ def compute_point(point1, x2, s, p):
 
 
 def point_doubling(point, a, p):
+    print(f'point: {point}')
     s = (eea(p, 2 * point[1]) * (3 * point[0] ** 2 + a)) % p
     print(f'\n{40*"-"}\n{point} + {point}:\ns = ((3 * {point[0]}^2 + {a}) * (2 '\
           f'* {point[1]}^-1) mod {p} = {s}')
@@ -18,6 +19,7 @@ def point_doubling(point, a, p):
 
 
 def point_addition(point1, point2, p):
+    print(f'point1: {point1} point2: {point2}')
     if point1 == 0:
         return point2
     elif point2 == 0:

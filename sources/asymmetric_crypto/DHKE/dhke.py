@@ -14,7 +14,7 @@ def dhke(p, alpha, ka_pr, kb_pr):
     k_AB = sqmul(kb_pub, ka_pr, p)
     print(f'Alice:\n   k_pr: {ka_pr}\n   k_pub: {ka_pub}\n   k_AB: {k_AB}\n'\
           f'Bob:\n   k_pr: {kb_pr}\n   k_pub: {kb_pub}\n   k_AB: {k_AB}\n'\
-          f'{28*"-"}')
+          f'{28*"-"}\n')
 
 
 def main():
@@ -24,10 +24,8 @@ def main():
     alpha = int(input('alpha: '))
     ka_pr = int(input('ka_pr (blank -> random): '))
     kb_pr = int(input('kb_pr (blank -> random): '))
-    print(28 * '-')
-    print('')
+    print(f'{28*"-"}\n')
     dhke(p, alpha, ka_pr, kb_pr)
-    print('')
 
 if __name__ == "__main__":
     main()
