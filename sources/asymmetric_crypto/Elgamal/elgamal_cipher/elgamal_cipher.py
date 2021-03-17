@@ -1,7 +1,6 @@
 from random import randint
 from eea import eea
 from dhke import dhke
-from squere_multiply import sqmul
 
 
 def elgamal_cipher(p, alpha, ka_pr, kb_pr, plaintext):
