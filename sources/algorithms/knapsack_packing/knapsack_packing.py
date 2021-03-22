@@ -1,8 +1,9 @@
-def knapsack_packing(n, w, v, c):
-    # knapsack packing algorithm
+def knapsack_packing(w, v, c):
+    n = len(w)
     b = [[0 for i in range(c + 1)] for j in range(n)]
     h = [[0 for i in range(c + 1)] for j in range(n)]
 
+    # knapsack packing algorithm
     for i in range(n):
         for j in range(c + 1):
             # old value: b[i - 1][j]
@@ -33,13 +34,11 @@ def knapsack_packing(n, w, v, c):
 
 
 def main():
-    item_amount = 6
     weight_list = [4,6,2,1,3,5]
     value_list = [6,3,5,1,4,2]
     capacity = 9
 
-    max_value, stored_items = knapsack_packing(item_amount, weight_list,
-                                               value_list, capacity)
+    max_value, stored_items = knapsack_packing(weight_list, value_list, capacity)
     print(f'\nThe maximum value is {max_value}\nto achieve that you have to pack '\
           f'the following items: {str(stored_items[::-1])[1:-1]}\n')
 
