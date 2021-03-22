@@ -16,19 +16,19 @@ def knapsack_packing(n, w, v, c):
                 h[i][j] = 0
     max_v = b[n - 1][c]
 
-    print('\nknapsack matrix:')
-    print('\n'.join([''.join(['{:3}'.format(item) for item in row[1:]]) 
-      for row in b]))
-    print('\nbacktrack matrix:')
-    print('\n'.join([''.join(['{:3}'.format(item) for item in row[1:]]) 
-      for row in h]))
-
     # backtrack algorithm
     p = []
     for i in range(n - 1, -1, -1):
         if h[i][c] == 1:
             p.append(i + 1)
             c -= w[i]
+
+    print('\nknapsack matrix:')
+    print('\n'.join([''.join(['{:3}'.format(item) for item in row[1:]]) 
+      for row in b]))
+    print('\nbacktrack matrix:')
+    print('\n'.join([''.join(['{:3}'.format(item) for item in row[1:]]) 
+      for row in h]))
     
     return (max_v, p)
 
