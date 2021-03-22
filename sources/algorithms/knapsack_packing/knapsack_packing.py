@@ -23,12 +23,11 @@ def knapsack_packing(n, w, v, c):
             p.append(i + 1)
             c -= w[i]
 
-    print('\nknapsack matrix:')
-    print('\n'.join([''.join(['{:3}'.format(item) for item in row[1:]]) 
-      for row in b]))
-    print('\nbacktrack matrix:')
-    print('\n'.join([''.join(['{:3}'.format(item) for item in row[1:]]) 
-      for row in h]))
+    # printing matrices
+    print("\nknapsack matrix:\n{}".format('\n'.join([''.join(['{:3}'.format(item) 
+          for item in row[1:]]) for row in b])))
+    print("\nbacktrack matrix:\n{}".format('\n'.join([''.join(['{:3}'.format(item)
+          for item in row[1:]]) for row in h])))
     
     return (max_v, p)
 
@@ -39,6 +38,7 @@ def main():
     weight_list = [4,6,2,1,3,5]
     value_list = [6,3,5,1,4,2]
     capacity = 9
+
     max_value, stored_items = knapsack_packing(item_amount, weight_list,
                                                value_list, capacity)
     print(f'\nThe maximum value is {max_value}\nto achieve that you have to pack '\
