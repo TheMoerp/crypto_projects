@@ -1,5 +1,4 @@
 def knapsack_packing(n, w, v, c):
-
     # knapsack packing algorithm
     b = [[0 for i in range(c + 1)] for j in range(n)]
     h = [[0 for i in range(c + 1)] for j in range(n)]
