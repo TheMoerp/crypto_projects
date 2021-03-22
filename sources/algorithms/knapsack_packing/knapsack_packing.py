@@ -32,7 +32,6 @@ def knapsack_packing(w, v, c):
     return (max_v, p)
 
 
-
 def main():
     weight_list = [4,6,2,1,3,5]
     value_list = [6,3,5,1,4,2]
