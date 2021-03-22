@@ -11,6 +11,7 @@ Some of them are very specific for one purpose while others are for general usag
 	 - ggt (Euclidean algorithm)
 	 - prime factorization
 	 - squere multiply
+	 - knapsack packing algorithm
 - **asymmetric cryptography**
 	- DHKE (Diffie Hellman key exchange)
 	- ecc (elliptical curves)
