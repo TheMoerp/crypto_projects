@@ -25,6 +25,11 @@ Some of them are very specific for one purpose while others are for general usag
 		- CRT (Chinese remainder theorem)
 - **hash functions**
 	- Keccak (SHA-3)
+- **crackers**
+	- IKEv1 cracker
+	- LMH cracker
+	- PPTPv1 cracker
+	- RC4 cracker
 - **block ciphers**
 	- AES *(old & not maintained!)*
 	- DES *(old & not maintained!)*
